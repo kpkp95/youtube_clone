@@ -10,7 +10,8 @@
 
 # production
 /build
-/Head.js
+src/components//Head.js
+
 # misc
 /readme1.md
 /readme2.md
