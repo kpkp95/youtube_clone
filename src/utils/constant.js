@@ -9,6 +9,8 @@ import {
   FaTv,
 } from "react-icons/fa";
 
+export const LIVE_CHAT_OFFSET = 100;
+
 export const YOUTUBE_IMG_URL =
   "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg";
 
