@@ -28,7 +28,7 @@ const Body = () => {
         <div
           className={`${
             isWatchPage
-              ? "fixed z-50 h-screen bg-white opacity-85"
+              ? "fixed z-50 h-screen bg-white opacity-90"
               : "relative h-screen"
           }`}
         >
