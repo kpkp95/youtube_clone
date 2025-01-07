@@ -5,14 +5,14 @@ import { menuItems, subscriptions } from "../utils/constant";
 
 const Sidebar = () => {
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
-
   const [activeItem, setActiveItem] = useState(null); // Track active menu item
+
   if (!isMenuOpen) return null;
 
   return (
-    <div className="p-5 h-screen shadow-lg w-56 flex-shrink-0 bg-white">
+    <div className="p-5 shadow-lg  md:w-44 lg:52   h-full bg-white flex-shrink-0">
       {/* Main Navigation */}
-      <ul className="space-y-2  text-sm">
+      <ul className="space-y-2 text-sm">
         {menuItems.map((item) => (
           <li
             key={item.name}
@@ -21,7 +21,7 @@ const Sidebar = () => {
                 ? "bg-gray-300 font-bold"
                 : "hover:bg-gray-200"
             }`}
-            onClick={() => setActiveItem(item.name)} // Update active state
+            onClick={() => setActiveItem(item.name)}
           >
             <Link to={item.route} className="flex items-center w-full">
               <span className="mr-5">{item.icon}</span>
@@ -44,7 +44,7 @@ const Sidebar = () => {
                 ? "bg-gray-300 font-bold"
                 : "hover:bg-gray-200"
             }`}
-            onClick={() => setActiveItem(sub.name)} // Update active state
+            onClick={() => setActiveItem(sub.name)}
           >
             <span className="mr-5">{sub.icon}</span>
             {sub.name}

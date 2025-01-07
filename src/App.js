@@ -1,12 +1,15 @@
 import Header from "./components/Header";
-import Head from "./components/Head";
+import React, { lazy, Suspense } from "react";
 import Body from "./components/Body";
-import MainContainer from "./components/MainContainer";
-import WatchPage from "./components/WatchPage";
-import SearchResults from "./components/SearchResults";
 import { Provider } from "react-redux";
 import store from "./utils/store";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// Lazy load components
+const MainContainer = lazy(() => import("./components/MainContainer"));
+const WatchPage = lazy(() => import("./components/WatchPage"));
+const SearchResults = lazy(() => import("./components/SearchResults"));
 
 // Layout Component
 const AppLayout = () => {
@@ -24,14 +27,8 @@ const appRouter = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      {
-        path: "/",
-        element: <MainContainer />, // Default child route
-      },
-      {
-        path: "watch",
-        element: <WatchPage />, // Route for watch page
-      },
+      { path: "/", element: <MainContainer /> },
+      { path: "watch", element: <WatchPage /> },
       { path: "results", element: <SearchResults /> },
     ],
   },
@@ -41,7 +38,11 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
-      <RouterProvider router={appRouter} />
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <RouterProvider router={appRouter} />
+        </Suspense>
+      </ErrorBoundary>
     </Provider>
   );
 }

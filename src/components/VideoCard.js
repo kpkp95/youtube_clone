@@ -18,15 +18,17 @@ const VideoCard = ({ info }) => {
 
   return (
     <div
-      className={`p-3 h-72  hover:bg-gray-200 text-black rounded-lg bg-white shadow-md hover:shadow-lg transition duration-200 ${
-        isMenuOpen ? "w-72 m-3 " : "w-80 m-4 "
+      className={`p-2 xs:p-3 md:p-2  md:h-72  xs:h-80 hover:bg-gray-200 text-black rounded-lg bg-white shadow-md hover:shadow-lg transition duration-200 ${
+        isMenuOpen
+          ? "xl:w-72 lg:w-64 md:w-64 md-lg:w-72  xs:w-96 w-80 xl:m-6 lg:m-2 md:m-4 md-lg:m-6 m-2   "
+          : "xl:w-80 lg:w-72 xl:m-4 md:w-80 md-lg:w-80 lg:m-2 md-lg:m-6 w-52  m-3"
       }`}
     >
       {/* Thumbnail */}
       <div className="relative">
         <img
-          className={`w-full  rounded-lg object-cover ${
-            isMenuOpen ? "h-40" : "h-44"
+          className={`w-full rounded-lg object-cover ${
+            isMenuOpen ? "h-44 xs:h-52 md:h-40 " : "h-44 md:h-44 "
           }`}
           src={thumbnails.medium.url}
           alt={title}

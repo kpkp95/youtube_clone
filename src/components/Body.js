@@ -26,16 +26,20 @@ const Body = () => {
     <div className="relative flex w-full  overflow-hidden">
       {isMenuOpen && (
         <div
-          className={`${
-            isWatchPage
-              ? "fixed z-50 h-screen bg-white opacity-90"
-              : "relative h-screen"
+          className={`hidden md:block ${
+            isWatchPage ? "fixed z-50 h-full  bg-white opacity-90" : "relative "
           }`}
         >
           <Sidebar />
         </div>
       )}
-      {!isMenuOpen && !isWatchPage && <CloseSidebar />}
+      {!isMenuOpen && !isWatchPage && (
+        <CloseSidebar className="hidden md:block " />
+      )}
+      {/* CloseSidebar for smaller screens (at the bottom) */}
+      <div className="fixed bottom-0 left-0 w-full md:hidden z-50">
+        <CloseSidebar />
+      </div>
       <Outlet />
     </div>
   );
