@@ -3,6 +3,7 @@ import appSlice from "./appSlice";
 import tabSlice from "./tabSlice";
 import searchSlice from "./searchSlice";
 import chatSlice from "./chatSlice";
+import authSlice from "./authSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     tab: tabSlice,
     search: searchSlice,
     chat: chatSlice,
+    auth: authSlice,
   },
 });
 

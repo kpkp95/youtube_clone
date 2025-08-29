@@ -4,11 +4,11 @@ import Button from "./Button";
 import { BTN_NAME_LIST } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../utils/tabSlice";
-
+ 
 const Buttonlist = ({ onTabClick }) => {
   const containerRef = useRef(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
-  const [showRightButton, setShowRightButton] = useState(true);
+  const [showRightButton, setShowRightButton] = useState(false);
   const dispatch = useDispatch();
   const selectedTab = useSelector((state) => state.tab.selectedTab);
 
@@ -24,20 +24,37 @@ const Buttonlist = ({ onTabClick }) => {
 
   // Function to check scroll position
   const handleScroll = () => {
-    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-    setShowLeftButton(scrollLeft > 0); // Show left button if not at the start
-    setShowRightButton(scrollLeft < scrollWidth - clientWidth); // Show right button if not at the end
+    const el = containerRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setShowLeftButton(scrollLeft > 0);
+    setShowRightButton(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 1);
   };
 
   // Add scroll event listener when component mounts
   useEffect(() => {
-    const scrollContainer = containerRef.current;
+    const el = containerRef.current;
+    if (!el) return;
 
-    scrollContainer.addEventListener("scroll", handleScroll);
+    // Listen to scroll
+    el.addEventListener("scroll", handleScroll);
 
-    // Cleanup listener on unmount
+    // Measure on mount and on resize/content changes
+    const ro = new ResizeObserver(() => handleScroll());
+    ro.observe(el);
+    // Also observe children width changes
+    Array.from(el.children).forEach((c) => ro.observe(c));
+
+    const onResize = () => handleScroll();
+    window.addEventListener("resize", onResize);
+
+    // Initial measurement
+    requestAnimationFrame(handleScroll);
+
     return () => {
-      scrollContainer.removeEventListener("scroll", handleScroll);
+      el.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", onResize);
+      ro.disconnect();
     };
   }, []);
 
@@ -46,7 +63,7 @@ const Buttonlist = ({ onTabClick }) => {
       {/* Left Scroll Button */}
       {showLeftButton && (
         <button
-          className="p-2 bg-gray-200 rounded-full mr-2 hover:bg-gray-300"
+          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           onClick={scrollLeft}
         >
           <FaChevronLeft size={20} />
@@ -56,14 +73,17 @@ const Buttonlist = ({ onTabClick }) => {
       {/* Scrollable Button List */}
       <div
         ref={containerRef}
-        className="flex overflow-x-scroll scrollbar-hide  space-x-3 w-full"
+        className="flex overflow-x-auto scrollbar-hide space-x-3 w-full"
       >
         {BTN_NAME_LIST.map((btnName) => (
           <Button
             key={btnName}
             btnName={btnName}
             isSelected={btnName === selectedTab} // Check if this tab is selected
-            onClick={() => dispatch(setTab(btnName))}
+            onClick={() => {
+              dispatch(setTab(btnName));
+              if (typeof onTabClick === "function") onTabClick(btnName);
+            }}
           />
         ))}
       </div>
@@ -71,7 +91,7 @@ const Buttonlist = ({ onTabClick }) => {
       {/* Right Scroll Button */}
       {showRightButton && (
         <button
-          className="p-2 bg-gray-200 rounded-full ml-2 hover:bg-gray-300"
+          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full ml-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           onClick={scrollRight}
         >
           <FaChevronRight size={20} />

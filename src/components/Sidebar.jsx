@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { menuItems, subscriptions } from "../utils/constant";
-
+ 
 const Sidebar = () => {
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
   const [activeItem, setActiveItem] = useState(null); // Track active menu item
@@ -10,7 +10,7 @@ const Sidebar = () => {
   if (!isMenuOpen) return null;
 
   return (
-    <div className="p-5 shadow-lg  md:w-44 lg:52   h-full bg-white flex-shrink-0">
+    <div className="p-5 shadow-lg  md:w-44 lg:52   h-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex-shrink-0">
       {/* Main Navigation */}
       <ul className="space-y-2 text-sm">
         {menuItems.map((item) => (
@@ -18,8 +18,8 @@ const Sidebar = () => {
             key={item.name}
             className={`flex items-center p-4 rounded-lg cursor-pointer ${
               activeItem === item.name
-                ? "bg-gray-300 font-bold"
-                : "hover:bg-gray-200"
+                ? "bg-gray-300 dark:bg-gray-700 font-bold"
+                : "hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
             onClick={() => setActiveItem(item.name)}
           >
@@ -32,7 +32,7 @@ const Sidebar = () => {
       </ul>
 
       {/* Subscription Section */}
-      <h1 className="font-bold text-sm text-gray-600 pl-3 pt-6">
+      <h1 className="font-bold text-sm text-gray-600 dark:text-gray-300 pl-3 pt-6">
         Subscriptions
       </h1>
       <ul className="space-y-2 text-sm mt-3">
@@ -41,8 +41,8 @@ const Sidebar = () => {
             key={sub.name}
             className={`flex items-center p-4 rounded-lg cursor-pointer ${
               activeItem === sub.name
-                ? "bg-gray-300 font-bold"
-                : "hover:bg-gray-200"
+                ? "bg-gray-300 dark:bg-gray-700 font-bold"
+                : "hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
             onClick={() => setActiveItem(sub.name)}
           >

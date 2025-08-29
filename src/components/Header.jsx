@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { YOUTUBE_IMG_URL } from "../utils/constant";
 import { FaRegUserCircle, FaSearch } from "react-icons/fa";
+import SignInButton from "./SignInButton";
+import SignOutButton from "./SignOutButton";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { cacheResults } from "../utils/searchSlice";
 import { Link } from "react-router-dom";
 import { setTab } from "../utils/tabSlice";
 import SearchBar from "./SearchBar";
-
+ 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -17,6 +19,7 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
+  const user = useSelector((store) => store.auth.user);
 
   const fetchSearchSuggestions = async () => {
     if (!searchQuery.trim()) return; // Prevent empty search queries
@@ -67,7 +70,7 @@ const Header = () => {
     <>
       {/* Mobile Search Overlay */}
       {showSearch && (
-        <div className="fixed inset-0 bg-white z-50 p-4 md:hidden  transition-opacity duration-300">
+        <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50 p-4 md:hidden  transition-opacity duration-300">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowSearch(false)}
@@ -89,17 +92,20 @@ const Header = () => {
       )}
 
       {/* Main Header */}
-      <div className="grid grid-flow-col items-center gap-4 p-2 pt-0 my-2 md:m-2 shadow-lg">
+      <div className="grid grid-flow-col items-center gap-4 p-2 pt-0 mt-0 mb-2 md:mt-0 md:mb-2 shadow-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
         {/* LEFT SECTION */}
         <div className="flex items-center space-x-2 col-span-1">
-          <GiHamburgerMenu
+          <button
+            aria-label="Toggle sidebar"
             onClick={toggleSideBar}
-            className=" hidden md:block h-7 md-lg:h-8 w-8 p-1 cursor-pointer"
-          />
+            className="hidden md:block p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <GiHamburgerMenu className="h-7 md-lg:h-8 w-8" />
+          </button>
           <Link to="/" onClick={handleLogoClick}>
             <img
               src={YOUTUBE_IMG_URL}
-              className="h-7 md-lg:h-8 p-1 md:mx-2  cursor-pointer"
+              className="h-7 md-lg:h-8 p-1 md:mx-2 cursor-pointer dark:invert"
               alt="Youtube Logo"
             />
           </Link>
@@ -130,7 +136,22 @@ const Header = () => {
           >
             Dark Mode
           </button>
-          <FaRegUserCircle className="w-7 h-7 md-lgh-8 md-lgw-8 cursor-pointer" />
+          {user ? (
+            <div className="flex items-center gap-2">
+              {user.photoURL ? (
+                <img
+                  src={user.photoURL}
+                  alt={user.displayName || "User"}
+                  className="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <FaRegUserCircle className="w-7 h-7" />
+              )}
+              <SignOutButton />
+            </div>
+          ) : (
+            <SignInButton />
+          )}
         </div>
       </div>
     </>

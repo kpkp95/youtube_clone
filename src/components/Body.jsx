@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Sidebar from "./Sidebar";
-
+ 
 import { useSelector, useDispatch } from "react-redux";
 import CloseSidebar from "./CloseSideBar";
 import { useLocation } from "react-router-dom";
@@ -27,7 +27,9 @@ const Body = () => {
       {isMenuOpen && (
         <div
           className={`hidden md:block ${
-            isWatchPage ? "fixed z-50 h-full  bg-white opacity-90" : "relative "
+            isWatchPage
+              ? "fixed z-50 h-full bg-white dark:bg-gray-900 opacity-90 dark:opacity-95"
+              : "relative"
           }`}
         >
           <Sidebar />

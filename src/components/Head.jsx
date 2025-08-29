@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { setTab } from "../utils/tabSlice";
-
+ 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);

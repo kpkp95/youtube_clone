@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+ 
 const SearchBar = ({
   searchQuery,
   setSearchQuery,
@@ -33,7 +33,7 @@ const SearchBar = ({
   return (
     <div className="relative flex items-center w-full md:w-auto">
       <input
-        className="w-full md:w-[250px] md-lg:w-[300px]  lg:w-[400px] xl:w-[600px]  border p-2 pl-5 border-gray-400 rounded-l-full focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+        className="w-full md:w-[250px] md-lg:w-[300px]  lg:w-[400px] xl:w-[600px]  border p-2 pl-5 border-gray-400 dark:border-gray-600 rounded-l-full focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         type="text"
         aria-label="Search input"
         placeholder="Search"
@@ -46,13 +46,13 @@ const SearchBar = ({
         onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
         onFocus={() => setShowSuggestions(true)}
       />
-      <button className="border border-gray-400 rounded-r-full p-2 px-4 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-200">
+      <button className="border border-gray-400 rounded-r-full p-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors duration-200">
         <FaSearch className="inline w-4 h-4" />
       </button>
 
       {showSuggestions && (
         <div
-          className="absolute top-12 w-full md:w-[400px] lg:w-[600px] bg-white shadow-lg border border-gray-200 rounded-lg z-10 transition-opacity duration-300"
+          className="absolute top-12 w-full md:w-[400px] lg:w-[600px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg z-10 transition-opacity duration-300"
           role="listbox"
           aria-label="Search suggestions"
         >
@@ -64,8 +64,8 @@ const SearchBar = ({
                   key={suggestion.id.videoId}
                 >
                   <li
-                    className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 flex items-center ${
-                      index === activeIndex ? "bg-gray-200" : ""
+                    className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center ${
+                      index === activeIndex ? "bg-gray-200 dark:bg-gray-700" : ""
                     }`}
                     onMouseEnter={() => setActiveIndex(index)} // Update activeIndex on hover
                     onClick={() => {
@@ -81,7 +81,7 @@ const SearchBar = ({
               ))}
             </ul>
           ) : (
-            <p className="p-4 text-gray-500">No suggestions found.</p>
+            <p className="p-4 text-gray-500 dark:text-gray-400">No suggestions found.</p>
           )}
         </div>
       )}

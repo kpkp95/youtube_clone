@@ -30,10 +30,14 @@ export const YOUTUBE_VIDEO_URL_3 = `https://youtube.googleapis.com/youtube/v3/vi
 export const YOUTUBE_VIDEO_URL_4 = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&key=${process.env.REACT_APP_YOUTUBE_API_KEY4}`;
 
 export const menuItems = [
-  { name: "Home", icon: <FaHome /> },
-  { name: "Short", icon: <FaVideo /> },
-  { name: "Videos", icon: <FaTv /> },
-  { name: "Live", icon: <FaBroadcastTower /> },
+  { name: "Home", icon: <FaHome />, route: "/" },
+  {
+    name: "Short",
+    icon: <FaVideo />,
+    route: "/results?search_query=shorts",
+  },
+  { name: "Videos", icon: <FaTv />, route: "/results?search_query=videos" },
+  { name: "Live", icon: <FaBroadcastTower />, route: "/results?search_query=live" },
 ];
 
 export const subscriptions = [

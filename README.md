@@ -1,7 +1,73 @@
+<>
+<div className="bg-white  shadow-md  xl:mx-2 p-2  rounded-lg  ">
+<div className=" items-center mb-4">
+<div className="ml-3">
+<p className="text:sm xl:text-xl font-medium">Live Chat</p>
+</div>
+</div>
+<div className=" w-full h-[300px] xl:h-[650px] rounded-lg p-4  flex flex-col-reverse overflow-y-scroll">
+<div>
+{chatMessages.map((chatMessage, index) => (
+<ChatMessage
+                timestamp={chatMessage.timestamp}
+                name={chatMessage.name}
+                key={index}
+                msg={chatMessage.message}
+              />
+))}
+</div>
+</div>
+<form
+onSubmit={(e) => {
+e.preventDefault();
+if (!liveMsg.trim()) return;
+dispatch(
+addMessage({
+name: "T2",
+message: liveMsg,
+timestamp: new Date().toLocaleTimeString(),
+})
+);
+setLiveMsg("");
+}}
+className="mt-2 lg:w-[60%] xl:w-full flex items-center" >
+<div className="relative">
+<button
+type="button"
+className="bg-gray-200 text-black px-2 xl:px-3 py-2 rounded-full xl:mr-2 hover:bg-gray-300"
+onClick={() => setShowEmojiPicker((prev) => !prev)} >
+😀
+</button>
+{showEmojiPicker && (
+<div className="absolute bottom-[0] right-0 xl:bottom-12 xl:left-0 z-50">
+<Picker onEmojiSelect={handleEmojiSelect} />
+</div>
+)}
+</div>
+<input
+type="text"
+value={liveMsg}
+placeholder="Type your message..."
+onChange={(e) => setLiveMsg(e.target.value)}
+className="flex-1 py-2 px-2 rounded-full bg-gray-100 focus:outline-none"
+/>
+<button className="bg-blue-500 text-white px-4 py-2 rounded-full ml-3 hover:bg-blue-600">
+Send
+</button>
+</form>
+</div>
+</>
+);
+};
+
+export default LiveChat;
+
 <<<<<<< HEAD
+
 # my-youtube
-youtube ui clone
-=======
+
+# youtube ui clone
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -72,4 +138,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> f9dff87 (Initial commit)
+
+> > > > > > > f9dff87 (Initial commit)

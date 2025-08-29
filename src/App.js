@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./utils/store";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AuthProvider from "./components/AuthProvider";
 
 // Lazy load components
 const MainContainer = lazy(() => import("./components/MainContainer"));
@@ -14,7 +15,7 @@ const SearchResults = lazy(() => import("./components/SearchResults"));
 // Layout Component
 const AppLayout = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors">
       <Header />
       <Body />
     </div>
@@ -39,9 +40,11 @@ function App() {
   return (
     <Provider store={store}>
       <ErrorBoundary>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RouterProvider router={appRouter} />
-        </Suspense>
+        <AuthProvider>
+          <Suspense fallback={<div>Loading...</div>}>
+            <RouterProvider router={appRouter} />
+          </Suspense>
+        </AuthProvider>
       </ErrorBoundary>
     </Provider>
   );

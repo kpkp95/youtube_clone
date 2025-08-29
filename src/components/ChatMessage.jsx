@@ -1,6 +1,6 @@
 import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
-
+ 
 const ChatMessage = ({ name, msg, timestamp }) => {
   return (
     <div className="flex justify-between items-center shadow-sm p-2">

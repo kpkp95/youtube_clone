@@ -7,8 +7,12 @@ const chatSlice = createSlice({
   },
   reducers: {
     addMessage: (state, action) => {
-      state.messages.splice(LIVE_CHAT_OFFSET, 1);
+      // Add the new message
       state.messages.push(action.payload);
+      // Keep only the last LIVE_CHAT_OFFSET messages
+      if (state.messages.length > LIVE_CHAT_OFFSET) {
+        state.messages.splice(0, state.messages.length - LIVE_CHAT_OFFSET);
+      }
     },
   },
 });

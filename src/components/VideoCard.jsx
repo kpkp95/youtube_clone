@@ -1,12 +1,14 @@
 import React from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
-
+ 
 const VideoCard = ({ info }) => {
-  const { snippet, statistics } = info;
+  // Support objects from both videos.list (has statistics) and search.list (no statistics)
+  const snippet = info?.snippet || {};
   const { channelTitle, title, thumbnails, publishedAt } = snippet;
+  const stats = info?.statistics || {};
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
-  const { viewCount } = statistics;
+  const viewCount = stats?.viewCount ?? null;
 
   // Helper function to format large numbers
   const formatCount = (num) => {
@@ -18,7 +20,7 @@ const VideoCard = ({ info }) => {
 
   return (
     <div
-      className={`p-2 xs:p-3 md:p-2  md:h-72  xs:h-80 hover:bg-gray-200 text-black rounded-lg bg-white shadow-md hover:shadow-lg transition duration-200 ${
+      className={`p-2 xs:p-3 md:p-2  md:h-72  xs:h-80 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-gray-100 shadow-md hover:shadow-lg transition duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 ${
         isMenuOpen
           ? "xl:w-72 lg:w-64 md:w-64 md-lg:w-72  xs:w-96 w-80 xl:m-6 lg:m-2 md:m-4 md-lg:m-6 m-2   "
           : "xl:w-80 lg:w-72 xl:m-4 md:w-80 md-lg:w-80 lg:m-2 md-lg:m-6 w-52  m-3"
@@ -47,9 +49,9 @@ const VideoCard = ({ info }) => {
           </div>
         </div>
 
-        <p className="text-xs text-gray-600 mt-1">{channelTitle}</p>
-        <div className="flex items-center justify-between text-xs text-gray-600 mt-2">
-          <span>{formatCount(viewCount)} views</span>
+        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{channelTitle}</p>
+        <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
+          <span>{viewCount ? `${formatCount(Number(viewCount))} views` : "—"}</span>
           <span>{moment(publishedAt).fromNow()}</span>
         </div>
       </div>
