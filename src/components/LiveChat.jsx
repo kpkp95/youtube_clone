@@ -6,6 +6,7 @@ import { addMessage } from "../utils/chatSlice";
 import Picker from "@emoji-mart/react";
 import { FaRegSmile } from "react-icons/fa";
 import { useSelector as useReduxSelector } from "react-redux";
+import { fetchYouTube } from "../utils/youtubeApi";
 
 const LiveChat = ({ videoId }) => {
   const [liveMsg, setLiveMsg] = useState("");
@@ -26,12 +27,6 @@ const LiveChat = ({ videoId }) => {
 
   // Poll YouTube Live Chat if the video is live
   useEffect(() => {
-    const key =
-      process.env.REACT_APP_YOUTUBE_API_KEY4 ||
-      process.env.REACT_APP_YOUTUBE_API_KEY3 ||
-      process.env.REACT_APP_YOUTUBE_API_KEY2 ||
-      process.env.REACT_APP_YOUTUBE_API_KEY;
-
     const clearPoll = () => {
       if (pollTimeoutRef.current) {
         clearTimeout(pollTimeoutRef.current);
@@ -40,12 +35,13 @@ const LiveChat = ({ videoId }) => {
     };
 
     const fetchLiveChatId = async () => {
-      if (!videoId || !key) return null;
+      if (!videoId) return null;
       setStatus("connecting");
       try {
-        const url = `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${videoId}&key=${key}`;
-        const res = await fetch(url);
-        const data = await res.json();
+        const data = await fetchYouTube("videos", {
+          part: "liveStreamingDetails",
+          id: videoId,
+        });
         const details = data?.items?.[0]?.liveStreamingDetails;
         const id = details?.activeLiveChatId;
         return id || null;
@@ -57,19 +53,12 @@ const LiveChat = ({ videoId }) => {
 
     const pollMessages = async () => {
       try {
-        const params = new URLSearchParams({
+        const data = await fetchYouTube("liveChat/messages", {
           part: "snippet,authorDetails",
           liveChatId: liveChatIdRef.current,
           maxResults: "200",
-          key,
+          pageToken: nextPageTokenRef.current || undefined,
         });
-        if (nextPageTokenRef.current) {
-          params.append("pageToken", nextPageTokenRef.current);
-        }
-        const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/liveChat/messages?${params.toString()}`
-        );
-        const data = await res.json();
 
         // Record next page token and next poll timing
         nextPageTokenRef.current = data?.nextPageToken || null;
@@ -101,7 +90,7 @@ const LiveChat = ({ videoId }) => {
       nextPageTokenRef.current = null;
       liveChatIdRef.current = null;
 
-      if (!videoId || !key) {
+      if (!videoId) {
         setStatus("unavailable");
         return;
       }
@@ -134,6 +123,13 @@ const LiveChat = ({ videoId }) => {
           </div>
         </div>
         <div ref={scrollRef} className=" w-full h-[300px] xl:h-[650px] rounded-lg p-4 overflow-y-scroll">
+          {status === "connecting" && chatMessages.length === 0 && (
+            <div className="space-y-2" role="status" aria-live="polite">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+              ))}
+            </div>
+          )}
           {chatMessages.map((chatMessage, index) => (
             <ChatMessage
               timestamp={chatMessage.timestamp}

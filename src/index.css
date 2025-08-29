@@ -13,6 +13,48 @@
     @apply m-0 transition-colors duration-300 ease-in-out;
   }
 }
+
+/* Mini player and theater mode helpers */
+.mini-player .aspect-video {
+  position: fixed;
+  width: 320px;
+  height: 180px;
+  bottom: 16px;
+  right: 16px;
+  z-index: 60;
+}
+
+.theater .md\:w-3\/4 {
+  width: 100% !important;
+}
+
+/* Theater mode layout: put right rail below and expand video */
+.theater .watch-flex {
+  flex-direction: column !important; /* override md:flex-row */
+}
+.theater .watch-video {
+  width: 100% !important; /* ensure full width video area */
+}
+.theater .watch-video .aspect-video {
+  max-width: 96vw; /* cover most of the screen */
+  aspect-ratio: 21/9; /* slightly shorter height, wider look */
+  margin-left: auto;
+  margin-right: auto; /* center the video */
+}
+/* Equalize left/right spacing in theater (remove sidebar offset) */
+.theater .watch-root {
+  margin-left: 0 !important; /* override md:ml-16 */
+}
+/* Below-video grid in theater: comments left, right rail right */
+.watch-below { display: block; }
+.right-inline { display: none; }
+.theater .watch-below {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* comments wider, rail narrower */
+  gap: 1.5rem;
+}
+.theater .right-inline { display: block; }
+.theater .watch-right { display: none !important; }
 .scrollbar-hide {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */

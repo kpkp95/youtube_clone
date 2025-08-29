@@ -14,16 +14,17 @@ const Sidebar = () => {
       {/* Main Navigation */}
       <ul className="space-y-2 text-sm">
         {menuItems.map((item) => (
-          <li
-            key={item.name}
-            className={`flex items-center p-4 rounded-lg cursor-pointer ${
-              activeItem === item.name
-                ? "bg-gray-300 dark:bg-gray-700 font-bold"
-                : "hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveItem(item.name)}
-          >
-            <Link to={item.route} className="flex items-center w-full">
+          <li key={item.name} className="w-full">
+            <Link
+              to={item.route}
+              onClick={() => setActiveItem(item.name)}
+              className={`flex items-center p-4 rounded-lg cursor-pointer w-full ${
+                activeItem === item.name
+                  ? "bg-gray-300 dark:bg-gray-700 font-bold"
+                  : "hover:bg-gray-200 dark:hover:bg-gray-700"
+              }`}
+              aria-label={`Open ${item.name}`}
+            >
               <span className="mr-5">{item.icon}</span>
               {item.name}
             </Link>

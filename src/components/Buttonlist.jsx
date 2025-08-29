@@ -63,7 +63,8 @@ const Buttonlist = ({ onTabClick }) => {
       {/* Left Scroll Button */}
       {showLeftButton && (
         <button
-          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          aria-label="Scroll left"
+          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full mr-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           onClick={scrollLeft}
         >
           <FaChevronLeft size={20} />
@@ -91,7 +92,8 @@ const Buttonlist = ({ onTabClick }) => {
       {/* Right Scroll Button */}
       {showRightButton && (
         <button
-          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full ml-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          aria-label="Scroll right"
+          className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-full ml-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           onClick={scrollRight}
         >
           <FaChevronRight size={20} />

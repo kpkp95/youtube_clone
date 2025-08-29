@@ -8,9 +8,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider";
 
 // Lazy load components
-const MainContainer = lazy(() => import("./components/MainContainer"));
-const WatchPage = lazy(() => import("./components/WatchPage"));
-const SearchResults = lazy(() => import("./components/SearchResults"));
+const MainContainer = lazy(() => import("./components/MainContainer.jsx"));
+const WatchPage = lazy(() => import("./components/WatchPage.jsx"));
+const SearchResults = lazy(() => import("./components/SearchResults.jsx"));
 
 // Layout Component
 const AppLayout = () => {

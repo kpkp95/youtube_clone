@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { YOUTUBE_IMG_URL } from "../utils/constant";
 import { FaRegUserCircle, FaSearch } from "react-icons/fa";
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
+import { applyThemeClass, persistUserTheme, saveThemeLocal } from "../utils/theme";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { cacheResults } from "../utils/searchSlice";
+import { fetchYouTube } from "../utils/youtubeApi";
 import { Link } from "react-router-dom";
 import { setTab } from "../utils/tabSlice";
 import SearchBar from "./SearchBar";
@@ -16,31 +18,27 @@ const Header = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
   const user = useSelector((store) => store.auth.user);
 
-  const fetchSearchSuggestions = async () => {
+  const fetchSearchSuggestions = useCallback(async () => {
     if (!searchQuery.trim()) return; // Prevent empty search queries
-    setIsLoading(true);
     try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=${encodeURIComponent(
-          searchQuery.trim()
-        )}&type=video&key=${process.env.REACT_APP_YOUTUBE_API_KEY3}`
-      );
-      const data = await response.json();
+      const data = await fetchYouTube("search", {
+        part: "snippet",
+        maxResults: "15",
+        q: searchQuery.trim(),
+        type: "video",
+      });
       if (data.items) {
         setSuggestions(data.items);
         dispatch(cacheResults({ [searchQuery]: data.items }));
       }
     } catch (error) {
       console.error("Error fetching search suggestions:", error);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [searchQuery, dispatch]);
   //make an api call after every key press
   //but if the difference between th last key press and current key press is <200ms decline the api call
   useEffect(() => {
@@ -56,7 +54,7 @@ const Header = () => {
     } else {
       setSuggestions([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, searchCache, fetchSearchSuggestions]);
 
   const handleLogoClick = () => {
     dispatch(setTab(null)); // Reset selectedTab to null
@@ -92,7 +90,7 @@ const Header = () => {
       )}
 
       {/* Main Header */}
-      <div className="grid grid-flow-col items-center gap-4 p-2 pt-0 mt-0 mb-2 md:mt-0 md:mb-2 shadow-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+      <div className="grid grid-flow-col items-center gap-4 p-2 pt-0 mt-0 mb-2 md:mt-0 md:mb-2 shadow-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 sticky top-0 z-50">
         {/* LEFT SECTION */}
         <div className="flex items-center space-x-2 col-span-1">
           <button
@@ -132,7 +130,13 @@ const Header = () => {
           </button>
           <button
             className="hidden md:flex items-center gap-2 border border-gray-400 rounded-full px-2 py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            onClick={() => document.body.classList.toggle("dark")}
+            onClick={async () => {
+              const isDark = document.body.classList.toggle("dark");
+              const theme = isDark ? "dark" : "light";
+              applyThemeClass(theme);
+              saveThemeLocal(theme);
+              if (user?.uid) await persistUserTheme(user.uid, theme);
+            }}
           >
             Dark Mode
           </button>
