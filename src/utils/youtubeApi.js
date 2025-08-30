@@ -1,10 +1,11 @@
-// Centralized YouTube Data API fetch with API key fallback
+﻿// Centralized YouTube Data API fetch with API key fallback
 
 const envKeys = [
-  process.env.REACT_APP_YOUTUBE_API_KEY,
+  process.env.REACT_APP_YOUTUBE_API_KEY1,
   process.env.REACT_APP_YOUTUBE_API_KEY2,
   process.env.REACT_APP_YOUTUBE_API_KEY3,
   process.env.REACT_APP_YOUTUBE_API_KEY4,
+  process.env.REACT_APP_YOUTUBE_API_KEY5,
 ].filter(Boolean);
 
 const isQuotaError = (payload, status) => {
@@ -48,4 +49,3 @@ export async function fetchYouTube(endpoint, params = {}) {
 export function firstAvailableApiKey() {
   return envKeys[0] || null;
 }
-
