@@ -3,8 +3,8 @@ import Comments from "./Comments";
  
 const CommentList = ({ comments }) => {
   return comments.map((comment) => (
-    <div>
-      <Comments key={comment.id} comment={comment} />
+    <div key={comment.id}>
+      <Comments comment={comment} />
       <div className="ml-4 border border-l-black dark:border-gray-600">
         <CommentList comments={comment.replies} />
       </div>

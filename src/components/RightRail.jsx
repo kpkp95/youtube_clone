@@ -11,17 +11,21 @@ const RightRail = ({ videoId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const isValidVideoId = (id) => /^[A-Za-z0-9_-]{11}$/.test(id || "");
     const fetchRelated = async () => {
       if (!videoId) return;
       setLoading(true);
       try {
-        const data = await fetchYouTube("search", {
-          part: "snippet",
-          relatedToVideoId: videoId,
-          type: "video",
-          maxResults: "20",
-        });
-        let list = Array.isArray(data.items) ? data.items : [];
+        const data = isValidVideoId(videoId)
+          ? await fetchYouTube("search", {
+              part: "snippet",
+              relatedToVideoId: videoId,
+              type: "video",
+              maxResults: "20",
+              videoEmbeddable: "true",
+            })
+          : null;
+        let list = Array.isArray(data?.items) ? data.items : [];
         if (list.length === 0) {
           const fallback = await fetchYouTube("videos", {
             part: "snippet",
@@ -155,4 +159,3 @@ const RightRail = ({ videoId }) => {
 };
 
 export default RightRail;
-

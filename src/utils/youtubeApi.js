@@ -6,6 +6,8 @@ const envKeys = [
   process.env.REACT_APP_YOUTUBE_API_KEY3,
   process.env.REACT_APP_YOUTUBE_API_KEY4,
   process.env.REACT_APP_YOUTUBE_API_KEY5,
+  process.env.REACT_APP_YOUTUBE_API_KEY6,
+  process.env.REACT_APP_YOUTUBE_API_KEY7,
 ].filter(Boolean);
 
 const isQuotaError = (payload, status) => {
