@@ -14,7 +14,7 @@ import ReactPlayer from "react-player/youtube";
 const WatchPage = () => {
   const [searchParams] = useSearchParams(); // Destructure to get the URLSearchParams object
   const videoId = searchParams.get("v"); // Extract the 'v' query parameter
-  console.log(videoId);
+  
   const dispatch = useDispatch();
 
   const [hasLiveChat, setHasLiveChat] = useState(null);
@@ -131,6 +131,7 @@ const WatchPage = () => {
               });
             }}
             aria-label="Toggle theater mode"
+            aria-pressed={theater}
           >
             Theater
           </button>
@@ -142,6 +143,7 @@ const WatchPage = () => {
             />
             Autoplay next
           </label>
+          {/* Save actions removed */}
         </div>
         {hasLiveChat && hasRelated ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -186,7 +188,7 @@ const WatchPage = () => {
         )}
       </div>
     ),
-    [dispatch, hasLiveChat, hasRelated, queue.autoplay, rightTab, videoId]
+    [hasLiveChat, hasRelated, queue.autoplay, rightTab, videoId, theater]
   );
 
   return (
@@ -211,7 +213,7 @@ const WatchPage = () => {
           )}
           <div className="watch-below mt-4">
             <div className="watch-comments">
-              <CommentsContainer videoId={videoId} compact={true} />
+              <CommentsContainer videoId={videoId} compact={true} hasLiveChat={!!hasLiveChat} />
             </div>
             {theater ? (
               <div className="right-inline">

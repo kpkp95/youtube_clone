@@ -23,14 +23,21 @@ const mapThreadsToComments = (threads) =>
     };
   });
 
-const CommentsContainer = ({ videoId, compact = false }) => {
+const CommentsContainer = ({ videoId, compact = false, hasLiveChat = false }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // null | 'COMMENTS_DISABLED' | 'LOAD_FAILED'
 
   useEffect(() => {
     const fetchComments = async () => {
       if (!videoId) return;
+      // Skip fetching while live chat is active to avoid quota waste
+      if (hasLiveChat) {
+        setComments([]);
+        setError("COMMENTS_DISABLED");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
@@ -42,18 +49,25 @@ const CommentsContainer = ({ videoId, compact = false }) => {
         if (data?.items) setComments(mapThreadsToComments(data.items));
         else setComments([]);
       } catch (e) {
-        setError("Failed to load comments");
+        const msg = String(e?.message || "").toLowerCase();
+        if (msg.includes("disabled") || msg.includes("commentsdisabled")) {
+          setError("COMMENTS_DISABLED");
+        } else {
+          setError("LOAD_FAILED");
+        }
       } finally {
         setLoading(false);
       }
     };
     fetchComments();
-  }, [videoId]);
+  }, [videoId, hasLiveChat]);
 
   return (
     <div className={compact ? "m-3 mt-2 p-0" : "m-5 mt-0 pt-0 p-2"}>
       <h1 className={compact ? "text-lg font-semibold" : "text-xl font-bold"}>Comments</h1>
-      <CommentInput onAdd={(c) => setComments((prev) => [c, ...prev])} />
+      {error !== "COMMENTS_DISABLED" && (
+        <CommentInput onAdd={(c) => setComments((prev) => [c, ...prev])} />
+      )}
       {loading && (
         <div className="space-y-3" role="status" aria-live="polite">
           {[...Array(4)].map((_, i) => (
@@ -67,7 +81,16 @@ const CommentsContainer = ({ videoId, compact = false }) => {
           ))}
         </div>
       )}
-      {error && <p className="text-red-600">{error}</p>}
+      {error === "COMMENTS_DISABLED" && (
+        <p className="text-gray-600 dark:text-gray-300">
+          {hasLiveChat
+            ? "Comments are disabled while this video is live. Join the live chat instead."
+            : "Comments are disabled for this video."}
+        </p>
+      )}
+      {error === "LOAD_FAILED" && (
+        <p className="text-red-600">Failed to load comments.</p>
+      )}
       {!loading && !error && comments.length === 0 && (
         <p className="text-gray-500 dark:text-gray-400">No comments found.</p>
       )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { YOUTUBE_IMG_URL } from "../utils/constant";
-import { FaRegUserCircle, FaSearch } from "react-icons/fa";
+import { FaRegUserCircle, FaSearch, FaArrowLeft } from "react-icons/fa";
 import SignInButton from "./SignInButton";
 import SignOutButton from "./SignOutButton";
 import { applyThemeClass, persistUserTheme, saveThemeLocal } from "../utils/theme";
@@ -12,7 +12,7 @@ import { fetchYouTube } from "../utils/youtubeApi";
 import { Link } from "react-router-dom";
 import { setTab } from "../utils/tabSlice";
 import SearchBar from "./SearchBar";
- 
+
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -73,8 +73,9 @@ const Header = () => {
             <button
               onClick={() => setShowSearch(false)}
               className="p-2 hover:bg-gray-100 rounded-full"
+              aria-label="Close search"
             >
-              ←
+              <FaArrowLeft className="w-5 h-5" />
             </button>
             <SearchBar
               searchQuery={searchQuery}
@@ -163,3 +164,4 @@ const Header = () => {
 };
 
 export default Header;
+

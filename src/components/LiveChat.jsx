@@ -2,17 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import { useSelector, useDispatch } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
- 
+
 import Picker from "@emoji-mart/react";
 import { FaRegSmile } from "react-icons/fa";
-import { useSelector as useReduxSelector } from "react-redux";
 import { fetchYouTube } from "../utils/youtubeApi";
 
 const LiveChat = ({ videoId }) => {
   const [liveMsg, setLiveMsg] = useState("");
   const dispatch = useDispatch();
   const chatMessages = useSelector((store) => store.chat.messages);
-  const authUser = useReduxSelector((store) => store.auth.user);
+  const authUser = useSelector((store) => store.auth.user);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const scrollRef = useRef(null);
   const [status, setStatus] = useState("idle"); // idle | connecting | live | unavailable | error
@@ -119,7 +118,7 @@ const LiveChat = ({ videoId }) => {
       <div className="bg-white dark:bg-gray-800 dark:text-gray-100 shadow-md  xl:mx-2 p-2  rounded-lg  ">
         <div className=" items-center mb-4">
           <div className="ml-3">
-            <p className="text:sm xl:text-xl font-medium">Live Chat</p>
+            <p className="text-sm xl:text-xl font-medium">Live Chat</p>
           </div>
         </div>
         <div ref={scrollRef} className=" w-full h-[300px] xl:h-[650px] rounded-lg p-4 overflow-y-scroll">

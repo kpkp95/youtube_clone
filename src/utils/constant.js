@@ -38,6 +38,7 @@ export const menuItems = [
   },
   { name: "Videos", icon: <FaTv />, route: "/results?search_query=videos" },
   { name: "Live", icon: <FaBroadcastTower />, route: "/results?search_query=live" },
+  
 ];
 
 export const subscriptions = [

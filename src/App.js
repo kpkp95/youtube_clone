@@ -11,6 +11,7 @@ import AuthProvider from "./components/AuthProvider";
 const MainContainer = lazy(() => import("./components/MainContainer.jsx"));
 const WatchPage = lazy(() => import("./components/WatchPage.jsx"));
 const SearchResults = lazy(() => import("./components/SearchResults.jsx"));
+// removed library pages
 
 // Layout Component
 const AppLayout = () => {
@@ -31,6 +32,7 @@ const appRouter = createBrowserRouter([
       { path: "/", element: <MainContainer /> },
       { path: "watch", element: <WatchPage /> },
       { path: "results", element: <SearchResults /> },
+      // library routes removed
     ],
   },
 ]);

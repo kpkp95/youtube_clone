@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
- 
+
 const VideoCard = ({ info }) => {
   // Support objects from both videos.list (has statistics) and search.list (no statistics)
   const snippet = info?.snippet || {};
@@ -18,6 +18,8 @@ const VideoCard = ({ info }) => {
     return num;
   };
 
+  const thumbUrl = thumbnails?.medium?.url || thumbnails?.high?.url || thumbnails?.default?.url || "";
+
   return (
     <div
       className={`p-2 xs:p-3 md:p-2  md:h-72  xs:h-80 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-gray-100 shadow-md hover:shadow-lg transition duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 ${
@@ -32,7 +34,7 @@ const VideoCard = ({ info }) => {
           className={`w-full rounded-lg object-cover ${
             isMenuOpen ? "h-44 xs:h-52 md:h-40 " : "h-44 md:h-44 "
           }`}
-          src={thumbnails.medium.url}
+          src={thumbUrl}
           alt={title}
         />
       </div>
@@ -60,3 +62,4 @@ const VideoCard = ({ info }) => {
 };
 
 export default VideoCard;
+
